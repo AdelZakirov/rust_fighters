@@ -15,10 +15,9 @@ from utils.early_stopping import EarlyStopping
 from loss import wcross_entropy as cross_entropy
 from loss import weighted_loss_metric
 from sklearn.metrics import f1_score
-import os
-os.chdir('/home/AZA/PycharmProjects/rust_fighters')
 
 
+# load the model
 def load_model(args, fold=0):
     checkpoint = args.fine_tune_checkpoints[fold]
     device = torch.device('cuda:0')
@@ -43,19 +42,22 @@ def load_model(args, fold=0):
     return model, optimizer
 
 
+# load the dataloaders
 def get_dataloaders(args, fold):
     TRAIN = list(np.loadtxt('Data/kfolds/TRAIN_CLUST_' + str(fold) + '.txt', delimiter='\n', dtype=str))
     VAL = list(np.loadtxt('Data/kfolds/VAL_CLUST_' + str(fold) + '.txt', delimiter='\n', dtype=str))
     labels = list(np.loadtxt('Data/kfolds/labels_train_clust' + str(fold) + '.txt', dtype=int))
     if args.mode == 'default':
-        ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='default', lweight=args.lweight)
+        ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='default',
+                             lweight=args.lweight)
         ds_val = WheatRust(VAL, size=args.size, augmentation='none', mode='default', lweight=False)
         weights = get_class_weights(labels)
         sampler_, shuffle_ = define_sampler(args, weights)
     elif args.mode == 'mixed':
         TEST = list(np.loadtxt('Data/TEST_confidant.txt', delimiter='\n', dtype=str))
         ds_pseudo = WheatRust(TEST, size=args.size, augmentation=args.augmentation, mode='pseudo', pweight=args.pweight)
-        ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='default', lweight=args.lweight)
+        ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='default',
+                             lweight=args.lweight)
         ds_val = WheatRust(VAL, size=args.size, augmentation='none', mode='default', lweight=False)
         ds_train = ds_train + ds_pseudo
         sampler_, shuffle_ = None, True
@@ -66,12 +68,13 @@ def get_dataloaders(args, fold):
         sampler_, shuffle_ = None, True
     elif args.mode == 'binary':
         ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='binary', lweight=args.lweight)
-        ds_val = WheatRust(VAL, size=args.size, augmentation='none', mode='binary',lweight=False)
+        ds_val = WheatRust(VAL, size=args.size, augmentation='none', mode='binary', lweight=False)
         labels = list(np.loadtxt('Data/kfolds/labels_train_clust_hva' + str(fold) + '.txt', dtype=int))
         weights = get_class_weights(labels)
         sampler_, shuffle_ = define_sampler(args, weights)
     elif args.mode == 'pval':
-        ds_train = WheatRust(TRAIN + VAL, size=args.size, augmentation=args.augmentation, mode='default', lweight=args.lweight)
+        ds_train = WheatRust(TRAIN + VAL, size=args.size, augmentation=args.augmentation, mode='default',
+                             lweight=args.lweight)
         TEST = list(np.loadtxt('Data/TEST_confidant.txt', delimiter='\n', dtype=str))
         ds_val = WheatRust(TEST, size=args.size, augmentation='none', mode='pseudo', pweight=1.0)
         labels = list(np.loadtxt('Data/kfolds/labels_all.txt', dtype=int))
@@ -81,7 +84,8 @@ def get_dataloaders(args, fold):
         TRAIN = list(np.loadtxt('Data/kfolds/TRAIN_CLUST_RUST_' + str(fold) + '.txt', delimiter='\n', dtype=str))
         VAL = list(np.loadtxt('Data/kfolds/VAL_CLUST_RUST_' + str(fold) + '.txt', delimiter='\n', dtype=str))
         labels = list(np.loadtxt('Data/kfolds/labels_train_clust_RUST_' + str(fold) + '.txt', dtype=int))
-        ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='binary_rust', lweight=args.lweight)
+        ds_train = WheatRust(TRAIN, size=args.size, augmentation=args.augmentation, mode='binary_rust',
+                             lweight=args.lweight)
         ds_val = WheatRust(VAL, size=args.size, augmentation='none', mode='binary_rust', lweight=False)
         weights = get_class_weights(labels)
         sampler_, shuffle_ = define_sampler(args, weights)
@@ -97,37 +101,11 @@ def get_dataloaders(args, fold):
     return train_loader, val_loader
 
 
-def mixup_data(x, y, alpha=1.0, use_cuda=True):
-    '''Returns mixed inputs, pairs of targets, and lambda'''
-    if alpha > 0:
-        lam = np.random.beta(alpha, alpha, size=x.size(0))
-        lam = np.stack((lam, 1 - lam), 0).max(0)
-        lam = torch.tensor(lam).float().cuda()
-    else:
-        lam = 1
-    batch_size = x.size()[0]
-    if use_cuda:
-        index = torch.randperm(batch_size).cuda()
-    else:
-        index = torch.randperm(batch_size)
-
-    mixed_x = lam.view(lam.size(0), 1, 1, 1) * x + (1 - lam).view(lam.size(0), 1, 1, 1) * x[index, :]
-    y_a, y_b = y, y[index]
-    return mixed_x, y_a, y_b, lam
-
-
-def mixup_criterion(criterion, w, pred, y_a, y_b, lam):
-    loss_a = lam.view(lam.size(0), 1) * criterion(pred, y_a, w, reduce=False)
-    loss_b = (1 - lam).view(lam.size(0), 1) * criterion(pred, y_b, w, reduce=False)
-    loss = loss_a + loss_b
-    return torch.mean(loss)
-
-
+# train function
 def train(args, model, device, train_loader, optimizer, scheduler, loss_function, epoch, train_loss, log):
     predictions = []
     targets = []
     model.train()
-    b = 0
     for batch in tqdm(train_loader, dynamic_ncols=True, desc=f"epoch {epoch} train"):
         if batch is None:
             continue
@@ -140,13 +118,6 @@ def train(args, model, device, train_loader, optimizer, scheduler, loss_function
             loss = mixup_criterion(loss_function, w, out, y_a, y_b, lam)
         else:
             loss = loss_function(out, y, w)
-        # loss = loss / args.accumulation_steps
-        # loss.backward()
-        # if (b + 1) % args.accumulation_steps == 0:
-        #     optimizer.zero_grad()
-        #     optimizer.step()
-        #     scheduler.step()
-        # b = b + 1
         train_loss.append(loss)
         optimizer.zero_grad()
         loss.backward()
@@ -164,9 +135,6 @@ def train(args, model, device, train_loader, optimizer, scheduler, loss_function
     F_score_macro = f1_score(targets_argmax, predictions_argmax, average='macro')
     train_log_loss = weighted_loss_metric(targets, predictions)
     print('------TRAIN-------')
-    # log_scalar("train_loss", train_loss.value, epoch)
-    # log_scalar("train_F_score_macro", F_score_macro, epoch)
-    # log_scalar("train_log_loss", train_log_loss, epoch)
     log.info(f"epoch {epoch} train_loss = {train_loss.value:0.3f}")
     log.info(f"epoch {epoch} train_log_loss = {train_log_loss:0.3f}")
     log.info(f"epoch {epoch} train_F_score_macro = {F_score_macro:0.3f}")
@@ -198,13 +166,10 @@ def validate(model, device, val_loader, loss_function, epoch, dev_loss, log):
     F_score_macro = f1_score(targets_argmax, predictions_argmax, average='macro')
     dev_log_loss = weighted_loss_metric(targets, predictions)
     print('------VALIDATION-------')
-    # log_scalar("val_loss", dev_loss.value, epoch)
-    # log_scalar("val_F_score_macro", F_score_macro, epoch)
-    # log_scalar("val_log_loss", dev_log_loss, epoch)
     log.info(f"epoch {epoch} val_loss = {dev_loss.value:0.3f}")
     log.info(f"epoch {epoch} val_log_loss = {dev_log_loss:0.3f}")
     log.info(f"epoch {epoch} val_F_score_macro = {F_score_macro:0.3f}")
-    # log.info(f"epoch {epoch} val_cm: \n {cm}")
+
     return dev_log_loss
 
 

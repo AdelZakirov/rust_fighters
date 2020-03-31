@@ -9,7 +9,7 @@ fine_tune_checkpoints: ['checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.29404
                         'checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.2940425.pth']
 
 folds: [0, 1, 2, 3, 4]
-size: 380
+size: 38
 
 # mode could be:
 # default: for original images train

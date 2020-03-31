@@ -5,7 +5,7 @@ import torch
 import cv2
 from albumentations import (CLAHE, RandomRotate90, ShiftScaleRotate, Blur,  IAAAdditiveGaussianNoise, GaussNoise,
                             MotionBlur, MedianBlur, RandomBrightnessContrast, IAASharpen, IAAEmboss, Flip, OneOf,
-                            Compose, Resize, Normalize)
+                            Compose, Resize)
 
 
 labels_dict = {'leaf_rust': 0,

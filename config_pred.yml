@@ -1,0 +1,12 @@
+checkpoints: ['checkpoints/ENB4_MIXED_640_0/checkpoint_38_NLL_loss=0.1891202.pth',
+              'checkpoints/ENB4_MIXED_640_1/checkpoint_4_NLL_loss=0.365374.pth',
+              'checkpoints/ENB4_MIXED_640_2/checkpoint_37_NLL_loss=0.3237926.pth',
+              'checkpoints/ENB4_MIXED_640_3/checkpoint_39_NLL_loss=0.228457.pth',
+              'checkpoints/ENB4_MIXED_640_4/checkpoint_2_NLL_loss=0.2198082.pth']
+
+
+sizes: [380, 380, 380, 380, 380]
+
+num_workers: 6
+batch_size: 8
+save_file_name: 'RESNET18_380_ORIGIN_'

@@ -14,7 +14,7 @@ warnings.filterwarnings("ignore")
 
 def predict(args: Namespace):
     ind = 0
-    for size, checkpoint in zip(args.sizes, args.fine_tune_checkpoints):
+    for size, checkpoint in zip(args.sizes, args.checkpoints):
         df = pd.DataFrame(columns=['ID', 'leaf_rust', 'stem_rust', 'healthy_wheat'])
         torch.cuda.empty_cache()
         device = torch.device(0)
