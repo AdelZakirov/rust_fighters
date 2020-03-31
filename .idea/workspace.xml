@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="17a88c97-c400-425a-9373-7879a80837a6" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="JupyterTrust" id="f767aff0-e96e-47f6-a2da-faf6fa51ed0a" />
+  <component name="ProjectId" id="1Yw5u4EsOPTiR7Rh09g4qqgp5gy" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="full.screen.before.presentation.mode" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/utils" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/utils" />
+      <recent name="$PROJECT_DIR$/helpers" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="17a88c97-c400-425a-9373-7879a80837a6" name="Default Changelist" comment="" />
+      <created>1583841036043</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1583841036043</updated>
+      <workItem from="1583841038503" duration="68808000" />
+      <workItem from="1584362922343" duration="60394000" />
+      <workItem from="1584820756770" duration="89331000" />
+      <workItem from="1585568270134" duration="5852000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="686" y="357" width="604" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585215842740">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="686" y="357" width="604" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1585215842740" />
+    <state x="512" y="132" key="SettingsEditor" timestamp="1584948771585">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="512" y="132" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1584948771585" />
+    <state x="599" y="166" width="778" height="772" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1584980276448">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="599" y="166" width="778" height="772" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1584980276448" />
+    <state width="600" height="423" key="javadoc.popup" timestamp="1585644728190">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="600" height="423" key="javadoc.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1585644728190" />
+  </component>
+</project>

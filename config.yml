@@ -1,0 +1,59 @@
+experiment_name: 'zindi'
+run_name: ENB4_640_mixed_train_640
+seed: 0030110921
+
+fine_tune_checkpoints: ['checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.2940425.pth',
+                        'checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.2940425.pth',
+                        'checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.2940425.pth',
+                        'checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.2940425.pth',
+                        'checkpoints/ENB4_640_PSEUDO/checkpoint_NLL_loss=0.2940425.pth']
+
+folds: [0, 1, 2, 3, 4]
+size: 380
+
+# mode could be:
+# default: for original images train
+# mixed: to train with pseudolabels
+# pseudo: to train only on pseudolabels
+# pval: to train on whole train set and validate on pseudolabels
+# binary: for binary classification on healthy vs rust
+# binary_rust: for binary classification on leaf/stem rust
+mode: 'default'
+
+pweight: 1.0 # weight of pseudoilabels if they are used
+lweight: False # True if we want to use weights on train samples
+mixup: True
+alpha: 0.2
+
+max_grad_norm: 10.0
+optimizer: 'adam'
+lr: 0.00001
+lr_end: 0.0000001
+scheduler: 'Cosine'
+batch_size: 6
+accumulation_steps: 1
+weight_decay: 0 #0.00000001
+sampler: 'wrs'
+augmentation: 'light'
+num_workers: 6
+max_epochs: 500
+
+es_patience: 20
+epochs_mixed: 0
+
+model_class: 'efficientnet_pytorch.EfficientNet.from_pretrained'
+model_hyperparams:
+  model_name: 'efficientnet-b7'
+  advprop: False
+  num_classes: 2
+
+
+#model_class: 'architectures.Descriptor'
+#model_hyperparams:
+#  encoder_name:  'resnet18'
+#  num_output: 3
+#  add_dense_layer: False
+#  pretrain: True
+
+
+
